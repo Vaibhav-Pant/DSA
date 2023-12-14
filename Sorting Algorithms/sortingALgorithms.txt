@@ -1,0 +1,299 @@
+//  Sorting Programs:-
+
+/*
+ 1. Bubble Sort
+
+    Algorithm:
+
+    n = length(arr)
+    for(int i = 0 to n-1)  // number of steps
+    {
+        swap = false;
+        for (j = 0 to n - i- 1) // number of comparisons
+        {
+            if (arr[j] > arr[j + 1]) then
+                swap(&arr[j], &arr[j + 1]);
+                swapped = true;
+        }
+
+        if(swap == false) then
+            break;
+    }
+
+    > Total number of passes: n-1
+    > Total number of comparisons: n(n-1)/2
+    > Time complexity: O(N^2)
+      Best case(ALready sorted): O(N)
+    > Auxiliary space: O(1)
+    > Algorithm is Stable(means elemnts with same key value
+      maintain thier relative order in sorted array) and In-place.
+    > Algorithm is adaptive (performance is better when input is sorted.)
+    
+*/
+
+/*
+    2. Selection Sort
+    One element is comapred with remaining all elements.
+    min/max element is found and place at sorted position.
+
+    Algorithm:
+
+    n = length(arr);
+    // One by one move boundary of unsorted subarray
+    for(int i = 0 to n-1)
+    {
+        min/max = i;
+
+        // Find the min/max element in the unsorted array
+        for(int j = i + 1 to n)
+        {
+            if(arr[min] > arr[j])
+            {
+                min = j;
+            }
+        }
+        swap(&arr[i], &arr[min]);
+    }
+
+    > Time complexity: O(N) * O(N) = O(N^2) (Best, worst)
+    > Auxiliary Spac: O(1)
+    > Not Stable. Can be made stable. In-place algo(No new array)
+    > Not adaptive (Same number of comparison and swaps)
+    > Good for small dataset.
+
+*/
+
+/*
+    3. Insertion Sort
+    Insert element arr[j] into the sorted arrary (arr[0 to j-1])
+     ___________
+    |7|-1|3|5|9|     --> Assume 7 is at sorted position.
+     ___________        Now elements after 7 will be inserted
+    |-1 7|3|5|9|        in the sorted array. 
+     ___________         
+    |-1 3 7|5|9|
+     ___________
+    |-1 3 5 7|9|
+     ___________
+    |-1 3 5 7 9|     --> Final sorted array.
+
+    Algorithm:
+
+    n = length(arr);
+    for(int i = 1 to n)
+    {
+        key = arr[i];
+        int j = i - 1;
+
+        while(j >= 0 && arr[j] > key)
+        {
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = key;
+    }
+
+
+    > Time complexity: O(N^2) (Worst and average)
+      Best case: O(N) (Alredy sorted)
+    > Auxiliary space: O(1)
+    > Stable and In-place(means use the same array to sort)
+    > Good for small dataset
+    > Adaptive
+
+*/
+
+/*
+    4. Merge Sort
+    --> works by dividing an array into smaller subarrays, 
+    sorting each subarray, and then merging the sorted 
+    subarrays back together to form the final sorted array.
+
+                         ________________
+                        | 38| 27| 43| 10|           ______
+                             /    \                      |   
+                            /      \                     |   
+                           /        \                    |   
+                          /          \                   |   
+                 ________/            \________          | Dividing the array.          
+                | 38|27 |             | 43| 10|          |           
+                   /   \                 /  \            |   
+             ___ /      \ ___     ____ /     \ ___       |           
+            |38|         |27|    | 43|        |10|       |           
+                \       /            \       /      _____|
+                 \     /              \     /
+                 _\___/_             __\___/_     _______
+                | 27|38|            | 10| 43|           |
+                        \           /                   |
+                         \         /                    |  Sorting & Merging          
+                          \       /                     |       
+                           \     /                      |      
+                         ___\___/________               |      
+                        | 10| 27| 38| 43|         ______|      
+
+
+    Algorithm:
+
+    // dividing the array into sub-array
+    // l: lower index, h: upper index
+    void mergesort(int arr[], int l, int h)
+    {
+        if(l < h)
+        {
+            int mid = l + (r - l) / 2 ;
+            mergesort(arr, l, m);
+            mergesort(arr, m, h);
+
+            MERGE(arr, l , m ,h;) // Merge and sort the sub array
+        }
+    }
+
+    // Sort and merge
+    void MERGE(int arr[],int l, int m, int h)
+    {
+        int i = l;
+        int j = m + 1;
+        int k = l;
+
+        while(i <= m && j  <= h)
+        {
+            if(arr[i] < arr[j])
+            {
+                arr2[k] = arr[i];
+                i++, k++;
+            }
+            else
+            {
+                arr2[k] = arr[j];
+                j++, k++
+            }
+        }
+
+        while(i <= m)
+        {
+            arr2[k] = arr[i];
+            i++, k++;
+        }
+        
+        while(j <= h)
+        {
+            arr2[k] = arr[j];
+            j++, k++;
+        }
+
+        for(int i = l; i <= h; i++)
+        {
+            arr[i] = arr2[i];
+        }
+
+    }
+
+
+    > Time Complexity: O(Nlog(N))
+      (Best, avg, worst case)
+    > Auxiliary space: O(N)  (A new array is created)
+    > Stable and Not In-Place Algo.
+    > Good For Large Datasets.
+    > Not Adaptive. 
+    
+*/  
+
+
+/*
+    5. Quick Sort
+    We take First element as pivot and try to place it at 
+    its correct position in the array.
+    Left side of this element contains all smaller elements.
+    Right side of this elements contains all greater elements.
+
+    Aplly same for left side and right side.
+
+                        _____________________________
+          Pivot(7) --> | 7| 6| 10| 5| 9| 2| 1| 15| 7|
+    
+                        Put (7) in the correct position
+                        _____________________________   
+                       | 2| 6| 1| 5| 7| 7| 10| 9| 15|
+
+                            /                    \   
+                           /                      \
+                          /                        \
+              ___________/___                       \___________
+Pivot(2)-->  | 2| 6| 1| 5| 7|           Pivot(10)-->| 10| 9| 15|       
+
+Put (2) in corrrect position                Put (10) in correct position
+              _______________                        ___________
+             | 1| 2| 6| 5| 7|                       | 9| 10| 15|
+              /       \                                 /  \
+             /         \                               /    \
+            /           \                             /      \ 
+        ___/             \_________               ___/        \____          
+       | 1|   Pivot(6)-->| 6| 5| 7|              | 9|         | 15| 
+            
+            Put (6)in correct pisition.
+                         _________
+                        | 5| 6| 7|
+                          /   \
+                         /     \
+                        /       \    
+                    ___/         \___   
+                   | 5|          | 7| 
+
+
+        ----> Final sorted arrary: 1 2 5 6 7 7 9 10
+
+
+    Algorithm:
+
+    // Put the pivot in correct and place and return index
+    int partition(int arr[], int low, int high)
+    {
+        int pivot = arr[low];
+        int i = low + 1;  // First element is pivot
+        int j = high;
+
+        do
+        {
+            while(arr[i] < pivot)
+            {
+                i++;
+            }
+
+            while(arr[j] > pivot)
+            {
+                j--;
+            }
+
+            if(i < j)
+            {
+                swap(&arr[i], &arr[low])
+            }
+        }while(i < j)
+        swap(&arr[j], &arr[low])
+
+        return j;
+    }   
+
+    // Do same Left and right side partition 
+    void quicksort(int arr[], int low, int high)
+    {
+        if(low < high)
+        {
+            int pivot = partition(arr, low, high);
+            quicksort(arr, low, pivot-1);
+            quicksort(arr, pivot+1,high);
+        }
+    }
+
+
+
+    > Time complexity: O(N^2) --> Worst case
+                       O(NlogN) --> Best and average
+    > Auxiliary space: O(1)
+    > Efficient for large dataset.
+    > Not stable
+    > Adaptive algorithm
+    > In place algorithm (doesnt need auxiliary 
+    datastructure to transform the input data)
+
+*/
